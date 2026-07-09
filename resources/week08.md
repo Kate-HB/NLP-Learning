@@ -40,7 +40,7 @@
 | 资料 | 学习内容 | 地址 |
 |---|---|---|
 | Hugging Face Examples | 项目代码参考 | https://github.com/huggingface/transformers/tree/main/examples |
-| Hugging Face Course | 项目流程参考 | https://huggingface.co/learn/nlp-course/chapter1/1 |
+| Hugging Face Course | 项目流程参考 | https://huggingface.co/learn/llm-course/chapter1/1 |
 | NLP-LOVE/ML-NLP | 面试知识点 | https://github.com/NLP-LOVE/ML-NLP |
 | GitHub Docs | README 写作 | https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-readmes |
 
@@ -255,3 +255,4 @@ Interview/
 - 每个项目有结果和错误分析
 - 完成面试讲解稿
 - 完成总复盘
+

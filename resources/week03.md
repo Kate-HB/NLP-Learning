@@ -44,7 +44,7 @@
 
 | 资料 | 学习内容 | 地址 |
 |---|---|---|
-| Hugging Face NLP Course Chapter 2 | tokenizer、model、pipeline | https://huggingface.co/learn/nlp-course/chapter2/1 |
+| Hugging Face LLM Course Chapter 2 | tokenizer、model、pipeline | https://huggingface.co/learn/llm-course/chapter2/1 |
 | Transformers Quicktour | 快速使用模型 | https://huggingface.co/docs/transformers/quicktour |
 | Tokenizers Docs | tokenizer 细节 | https://huggingface.co/docs/tokenizers/index |
 | Transformers GitHub | 生态源码入口 | https://github.com/huggingface/transformers |
@@ -232,3 +232,4 @@ outputs/
 - 能手动完成推理
 - 能对比不同 tokenizer
 - 能写出 Hugging Face 推理流程
+

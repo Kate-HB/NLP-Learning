@@ -15,7 +15,7 @@
 
 ## 主线资料
 
-- Hugging Face NLP Course：https://huggingface.co/learn/nlp-course/chapter1/1
+- Hugging Face LLM Course：https://huggingface.co/learn/llm-course/chapter1/1
 - Transformers：https://github.com/huggingface/transformers
 - Datasets：https://github.com/huggingface/datasets
 - Tokenizers：https://github.com/huggingface/tokenizers
@@ -25,3 +25,4 @@
 - NLP-LOVE/ML-NLP：https://github.com/NLP-LOVE/ML-NLP
 - PyTorch Tutorials：https://pytorch.org/tutorials/
 - Stanford CS224N：https://web.stanford.edu/class/cs224n/
+

@@ -45,7 +45,7 @@
 
 | 资料 | 学习内容 | 地址 |
 |---|---|---|
-| Hugging Face NLP Course Chapter 1 | NLP 任务概览 | https://huggingface.co/learn/nlp-course/chapter1/1 |
+| Hugging Face LLM Course Chapter 1 | NLP 任务概览 | https://huggingface.co/learn/llm-course/chapter1/1 |
 | scikit-learn Text Feature Extraction | TF-IDF、CountVectorizer | https://scikit-learn.org/stable/modules/feature_extraction.html#text-feature-extraction |
 | NLP-LOVE/ML-NLP | NLP 基础、词向量 | https://github.com/NLP-LOVE/ML-NLP |
 | Stanford CS224N | Word Vectors | https://web.stanford.edu/class/cs224n/ |
@@ -237,3 +237,4 @@ outputs/
 - 能输出分类指标
 - 能写错误分析
 - 能说明为什么后续要学 BERT
+

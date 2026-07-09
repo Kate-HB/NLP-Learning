@@ -94,7 +94,7 @@
 
 | 资料 | 地址 | 用途 |
 |---|---|---|
-| Hugging Face NLP Course | https://huggingface.co/learn/nlp-course/chapter1/1 | 主线课程，优先学习 |
+| Hugging Face LLM Course | https://huggingface.co/learn/llm-course/chapter1/1 | 主线课程，优先学习 |
 | Transformers GitHub | https://github.com/huggingface/transformers | 模型加载、推理、微调 |
 | Transformers Docs | https://huggingface.co/docs/transformers/index | API 查询 |
 | Datasets GitHub | https://github.com/huggingface/datasets | 数据集加载和处理 |
@@ -285,7 +285,7 @@ NLP-Learning/
 ### 学习资料
 
 - PyTorch Tutorials
-- Hugging Face NLP Course Chapter 1
+- Hugging Face LLM Course Chapter 1
 - NLP-LOVE/ML-NLP 机器学习基础部分
 
 ### 任务
@@ -328,7 +328,7 @@ NLP-Learning/
 
 ### 学习资料
 
-- Hugging Face NLP Course Chapter 1
+- Hugging Face LLM Course Chapter 1
 - NLP-LOVE/ML-NLP NLP 基础部分
 - scikit-learn 文本特征提取文档
 
@@ -372,7 +372,7 @@ NLP-Learning/
 
 ### 学习资料
 
-- Hugging Face NLP Course Chapter 2
+- Hugging Face LLM Course Chapter 2
 - Transformers Docs Quicktour
 - Tokenizers GitHub
 
@@ -460,7 +460,7 @@ NLP-Learning/
 
 - BERT Paper
 - The Illustrated BERT
-- Hugging Face NLP Course Chapter 3
+- Hugging Face LLM Course Chapter 3
 - NLP-LOVE/ML-NLP BERT 部分
 
 ### 任务
@@ -822,4 +822,5 @@ print(tokenizer.decode(encoded["input_ids"]))
 - [ ] 能写项目 README
 - [ ] 能做错误分析
 - [ ] 能讲清楚项目
+
 

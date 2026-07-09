@@ -51,7 +51,7 @@
 | 资料 | 学习内容 | 地址 |
 |---|---|---|
 | PyTorch Tutorials | Tensor、Autograd、训练流程 | https://pytorch.org/tutorials/ |
-| Hugging Face NLP Course Chapter 1 | pipeline、NLP 任务概览 | https://huggingface.co/learn/nlp-course/chapter1/1 |
+| Hugging Face LLM Course Chapter 1 | pipeline、NLP 任务概览 | https://huggingface.co/learn/llm-course/chapter1/1 |
 | Transformers Quicktour | pipeline、AutoTokenizer、AutoModel | https://huggingface.co/docs/transformers/quicktour |
 
 ## 2.2 补充资料
@@ -64,7 +64,7 @@
 
 ## 2.3 本周资料使用顺序
 
-1. 先看 Hugging Face NLP Course Chapter 1。
+1. 先看 Hugging Face LLM Course Chapter 1。
 2. 跑通 `pipeline`。
 3. 再看 PyTorch Tutorials 的 Tensor 和 Autograd。
 4. 最后补 NLP-LOVE/ML-NLP 里的机器学习基础。
@@ -116,7 +116,7 @@ outputs/
 
 ### 学习资料
 
-- Hugging Face NLP Course Chapter 1
+- Hugging Face LLM Course Chapter 1
 - Transformers Quicktour
 
 ### 任务
@@ -480,3 +480,4 @@ Week 1 结束时，你应该能做到：
 - 独立写一个最小训练循环
 - 写出 5 篇每日笔记
 - 写出 1 篇周总结
+

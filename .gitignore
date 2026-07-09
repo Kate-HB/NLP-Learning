@@ -1,0 +1,71 @@
+﻿# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Virtual environments and secrets
+.env
+.env/
+.env.*
+!.env.example
+.venv/
+venv/
+env/
+*.pem
+*.key
+
+# Jupyter
+.ipynb_checkpoints/
+**/.ipynb_checkpoints/
+
+# Hugging Face and ML caches
+.cache/
+**/.cache/
+huggingface/
+wandb/
+mlruns/
+runs/
+
+# Model weights and checkpoints
+*.bin
+*.safetensors
+*.gguf
+*.ckpt
+*.pth
+*.pt
+*.onnx
+checkpoints/
+models/
+
+# Local datasets and generated outputs
+/data/*
+!/data/.gitkeep
+/outputs/*
+!/outputs/.gitkeep
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+*.bak
+*.swp
+~$*
+
+# Build and package artifacts
+build/
+dist/
+*.egg-info/
+
+# IDE local state
+.vscode/.ropeproject/
+.idea/
+
+# Operating system
+.DS_Store
+Thumbs.db
+desktop.ini

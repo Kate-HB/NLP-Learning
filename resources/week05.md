@@ -41,7 +41,7 @@
 |---|---|---|
 | BERT Paper | BERT 原论文 | https://arxiv.org/abs/1810.04805 |
 | The Illustrated BERT | BERT 图解 | https://jalammar.github.io/illustrated-bert/ |
-| Hugging Face Course Chapter 3 | 微调预训练模型 | https://huggingface.co/learn/nlp-course/chapter3/1 |
+| Hugging Face Course Chapter 3 | 微调预训练模型 | https://huggingface.co/learn/llm-course/chapter3/1 |
 | Transformers Trainer Docs | Trainer 用法 | https://huggingface.co/docs/transformers/main_classes/trainer |
 | NLP-LOVE/ML-NLP | BERT 理论补充 | https://github.com/NLP-LOVE/ML-NLP |
 
@@ -218,3 +218,4 @@ outputs/
 - 能预测单条文本
 - 能写项目 README
 - 能完成错误分析
+

@@ -40,7 +40,7 @@
 |---|---|---|
 | GPT-2 Paper | GPT 生成模型 | https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf |
 | Transformers Generation Docs | 生成参数 | https://huggingface.co/docs/transformers/main_classes/text_generation |
-| Hugging Face Course | Causal LM | https://huggingface.co/learn/nlp-course/chapter7/6 |
+| Hugging Face Course | Causal LM | https://huggingface.co/learn/llm-course/chapter7/6 |
 | NLP-LOVE/ML-NLP | 语言模型补充 | https://github.com/NLP-LOVE/ML-NLP |
 
 ---
@@ -214,3 +214,4 @@ notes/
 - 能对比解码策略
 - 能解释生成参数
 - 能写生成错误分析
+
