@@ -77,6 +77,22 @@ Day 01 已完成：
 - Transformer 架构入门
 - 已学习 Hugging Face LLM Course Chapter 1/4
 
+Day 02 已推进：
+
+- 学习 Encoder-only、Decoder-only、Encoder-Decoder 三类模型
+- 理解 BERT 的 MLM：完整句子先存在，再随机遮盖部分 token，用原词作为监督答案
+- 区分 BERT 的 `[MASK]` token 和 Decoder 的 attention mask
+- 理解因果注意力掩码：未来位置 logits 被设为极小值，softmax 后注意力权重接近 0
+- 理解隐藏状态：模型内部对 token 的上下文化向量表示
+- 理解 logits：模型对词表中每个候选 token 的原始分数，不是概率
+- 修正 GPT-2 训练表述：不是 “logits 向右移动”，而是用当前位置 logits 预测下一个 token
+- 学习语言建模头：把隐藏状态线性变换为词表 logits
+- 学习摘要、翻译、Whisper、ViT、LLM 推理、采样策略、KV 缓存等概念
+- 理解图片 `summary.png`：Encoder 双向理解，Decoder 自回归生成
+- 理解图片 `注意力掩码示例.png`：绿色表示可见位置，白色表示被 mask 的位置
+- 遇到并处理音频任务依赖：`ffmpeg was not found`，原因是音频解码需要系统 ffmpeg
+- 已整理 `04-Transformer/transformer-basics.md`
+- 已整理 `notes/day02.md`，并在末尾追加“今日知识总结”
 Day 01 笔记：
 
 ```text
@@ -174,24 +190,35 @@ Transformers 5.13.0 未注册该 Pipeline，而课程示例仍依赖它。已降
 - 主 README 只保留路线、索引、目标和阶段产出
 - 新内容优先写入对应主题文档，避免所有内容堆积在每日笔记
 
+
+## 每日学习工作流
+
+- 学习过程中，用户会随时向 Codex 提问概念、代码、报错、图片和文档内容。
+- 回答问题时，优先用用户当前正在看的文件和选中文本作为上下文。
+- 概念解释遵循：先讲直观含义，再给简单例子，最后说明技术原理。
+- 遇到环境或代码报错时，先解释错误含义，再给最小修复命令，不主动扩大范围。
+- 每天学习结束时，需要整理当天学习内容到 `notes/dayXX.md`。
+- 每天笔记末尾必须添加 `## 今日知识总结`，格式参考 `notes/day01.md`：使用多个 `### 小标题`，每个小标题下写段落式解释。
+- 每天总结要覆盖：今天学了什么、关键概念是什么、容易混淆点是什么、今天解决了什么问题、下一步应该学什么。
+- 如果当天内容属于某个主题目录，也要同步整理到对应主题文档。例如 Transformer 相关内容整理到 `04-Transformer/transformer-basics.md`。
+- 每日整理时要修正明显错误表述、图片链接、Markdown 格式和路径问题。
+- 写入文件后要验证：无乱码、总结只有一处、关键旧错误表述已清除。
+- 更新学习进度后，需要同步更新 `MEMORY.md`，方便后续继续学习。
 ## 下一步
 
-Day 02 学习 Tokenizer：
+继续学习建议：
 
-- Token 与词表
-- `AutoTokenizer`
-- `tokenize()`、`encode()`、`decode()`
-- `input_ids`
-- 特殊 Token
-- Padding
-- Truncation
-- Attention Mask
+- 先完成 `notes/day02.md` 中未完全理解的 Transformer 应用部分
+- 再正式进入 Tokenizer：Token、词表、`AutoTokenizer`、`input_ids`、特殊 Token、Padding、Truncation、Attention Mask
+- 使用 `notebooks/day02.ipynb` 做小实验，不要同时扩展太多音频/视觉任务
+- 后续将稳定知识整理到 `04-Transformer/transformer-basics.md`
 
-预期产出：
+预期下一批产出：
 
 ```text
-notebooks/day02-tokenizer.ipynb
-notes/day02.md
+notes/day03.md
+notebooks/day03-tokenizer.ipynb
+03-NLP-Basic/tokenizer-basics.md
 ```
 
 ## 恢复上下文顺序
@@ -203,3 +230,6 @@ notes/day02.md
 3. 当前周的 `resources/weekXX.md`
 4. 最近一天的 `notes/dayXX.md`
 5. 对应主题目录中的文档
+
+
+
