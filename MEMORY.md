@@ -16,23 +16,29 @@
 C:\Users\27729\Desktop\NLP-Learning
 ```
 
-主学习路线为 8 周：
+主学习路线为 8 周：系统理解 NLP，并用项目验证每个阶段。
 
-1. 环境、Python、PyTorch、Hugging Face 入门
-2. NLP 基础与文本表示
-3. Transformer 基础
-4. 手写 Mini Transformer
-5. BERT 与下游任务
-6. GPT 与文本生成
-7. LoRA、PEFT、RAG 等现代 LLM 技术
-8. 综合项目
+1. Hugging Face 入门与 Tokenizer
+2. PyTorch 最小训练基础
+3. 深度学习概念与 Transformer
+4. BERT 微调与中文文本分类项目
+5. 传统 NLP、BERT 与序列标注
+6. GPT、生成与解码策略
+7. Embedding、语义检索与 RAG 项目
+8. LLM 应用整合项目
 
 详细周计划位于：
 
 ```text
-resources/week01.md
+resources/weeks/week01.md
 ...
-resources/week08.md
+resources/weeks/week08.md
+```
+
+总路线位于：
+
+```text
+resources/roadmap.md
 ```
 
 ## 当前环境
@@ -93,6 +99,22 @@ Day 02 已推进：
 - 遇到并处理音频任务依赖：`ffmpeg was not found`，原因是音频解码需要系统 ffmpeg
 - 已整理 `04-Transformer/transformer-basics.md`
 - 已整理 `notes/day02.md`，并在末尾追加“今日知识总结”
+
+Day 03 已推进：
+
+- 学习 Hugging Face Chapter 2.2 到 2.5 的核心内容
+- 拆解 `pipeline()`：tokenizer 预处理、model 计算、后处理
+- 理解 `checkpoint`：模型文件地址，不是模型对象
+- 理解 `AutoTokenizer.from_pretrained(checkpoint)` 和 `AutoModel.from_pretrained(checkpoint)` 的区别
+- 理解 `AutoModel` 输出 hidden states，`AutoModelForSequenceClassification` 输出 logits
+- 理解 hidden states 形状：`batch_size, sequence_length, hidden_size`
+- 理解模型 head：把 hidden states 转成具体任务输出
+- 理解 logits、softmax、概率和 `id2label`
+- 理解 `return_tensors="pt"`：把 list 输出改成 PyTorch tensor，并增加 batch 维度
+- 区分句子对输入 `tokenizer("A", "B")` 和 batch 输入 `tokenizer(["A", "B"])`
+- 理解 padding、truncation、`attention_mask`
+- 已整理 `notes/day03.md`
+- 已新增 `03-NLP-Basic/tokenizer-basics.md`
 Day 01 笔记：
 
 ```text
@@ -186,7 +208,8 @@ Transformers 5.13.0 未注册该 Pipeline，而课程示例仍依赖它。已降
 - PyTorch 练习放入 `02-PyTorch`
 - NLP 基础放入 `03-NLP-Basic`
 - Transformer 原理与实现放入 `04-Transformer`
-- 每周计划放入 `resources/weekXX.md`
+- 每周计划放入 `resources/weeks/weekXX.md`
+- 项目放入 `projects/p1-text-classification`、`projects/p2-rag-qa`、`projects/p3-llm-app`
 - 主 README 只保留路线、索引、目标和阶段产出
 - 新内容优先写入对应主题文档，避免所有内容堆积在每日笔记
 
@@ -208,16 +231,16 @@ Transformers 5.13.0 未注册该 Pipeline，而课程示例仍依赖它。已降
 
 继续学习建议：
 
-- 先完成 `notes/day02.md` 中未完全理解的 Transformer 应用部分
-- 再正式进入 Tokenizer：Token、词表、`AutoTokenizer`、`input_ids`、特殊 Token、Padding、Truncation、Attention Mask
-- 使用 `notebooks/day02.ipynb` 做小实验，不要同时扩展太多音频/视觉任务
-- 后续将稳定知识整理到 `04-Transformer/transformer-basics.md`
+- 当前路线已重构为 `resources/roadmap.md`
+- 先按 `resources/weeks/week01.md` 进入 Hugging Face Chapter 2
+- Day 03 重点：Tokenizer、词表、`AutoTokenizer`、`input_ids`、特殊 Token、Padding、Truncation、Attention Mask
+- 后续每周用一个实验或项目验证理解
 
 预期下一批产出：
 
 ```text
-notes/day03.md
-notebooks/day03-tokenizer.ipynb
+notes/day04.md
+notebooks/day04-tokenizer.ipynb
 03-NLP-Basic/tokenizer-basics.md
 ```
 
@@ -227,9 +250,8 @@ notebooks/day03-tokenizer.ipynb
 
 1. `MEMORY.md`
 2. `README.md`
-3. 当前周的 `resources/weekXX.md`
-4. 最近一天的 `notes/dayXX.md`
-5. 对应主题目录中的文档
-
-
+3. `resources/roadmap.md`
+4. 当前周的 `resources/weeks/weekXX.md`
+5. 最近一天的 `notes/dayXX.md`
+6. 对应主题目录中的文档
 
