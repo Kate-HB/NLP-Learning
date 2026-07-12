@@ -228,7 +228,88 @@ Transformer 不需要先完成位置 1 的预测，再开始位置 2。它把所
 6. 将三个预测分别与真实目标比较。
 7. 汇总损失并通过反向传播更新参数。
 
-## 13. 自测问题
+## 13. 隐藏状态、Head 与 Logits
+
+### 隐藏状态（Hidden States）
+
+模型内部对每个 Token 的上下文化向量表示，由 `AutoModel` 输出。形状为三维张量：
+
+```text
+(batch_size, sequence_length, hidden_size)
+```
+
+例如 `torch.Size([2, 16, 768])`：
+- `2`：一次输入 2 个句子（batch size）
+- `16`：每个句子 16 个 token（含 padding）
+- `768`：每个 token 的向量维度
+
+隐藏状态不是最终分类结果，而是 Transformer 主体对每个 token 的"理解"。不同任务需要在此基础上接不同的 head。
+
+### 模型 Head
+
+Head 是接在 Transformer 主体后的任务专用层，把隐藏状态转换为具体任务输出：
+
+```text
+input_ids
+→ Embedding 层
+→ Transformer layers
+→ hidden states
+→ Head（线性层）
+→ logits
+```
+
+常见 Head：
+
+| Head | 任务 | 输出 |
+|---|---|---|
+| Sequence Classification Head | 文本分类 | 类别 logits |
+| MLM Head | 掩码填充 | 词表大小 logits |
+| QA Head | 问答 | 答案起止位置 logits |
+| LM Head | 文本生成 | 下一个 token 的 logits |
+| Token Classification Head | NER | 每个 token 的类别 logits |
+
+### AutoModel vs AutoModelForXxx
+
+```python
+# 输出 hidden states —— 未决定具体任务
+from transformers import AutoModel
+model = AutoModel.from_pretrained(checkpoint)
+outputs = model(**inputs)  # outputs.last_hidden_state: (batch, seq, hidden)
+
+# 输出分类 logits —— hidden states + classification head
+from transformers import AutoModelForSequenceClassification
+model = AutoModelForSequenceClassification.from_pretrained(checkpoint)
+outputs = model(**inputs)  # outputs.logits: (batch, num_labels)
+```
+
+同一 checkpoint 的 `AutoModel` 和 `AutoModelForSequenceClassification` 共享 Transformer 主体结构，区别仅在于是否附加了任务 head 以及 head 的权重是否经过微调。
+
+### logits → softmax → label
+
+logits 是模型输出的原始分数（可为负数，不要求和为 1）：
+
+```python
+outputs.logits
+# tensor([[-2.7276,  2.8789]])  # 第 0 类原始分较低，第 1 类较高
+```
+
+softmax 将 logits 转为概率（每行和为 1）：
+
+```python
+import torch
+probs = torch.nn.functional.softmax(outputs.logits, dim=-1)
+# tensor([[0.0039, 0.9961]])  # 第 1 类概率 99.61%
+```
+
+最后用 `id2label` 映射为可读标签：
+
+```python
+model.config.id2label  # {0: 'NEGATIVE', 1: 'POSITIVE'}
+```
+
+整个后处理流程：`logits → softmax → argmax → id2label`。
+
+## 14. 自测问题
 
 1. Encoder-only、Decoder-only、Encoder-Decoder 分别适合什么任务？
 Encoder-only适合做文本分类，Decoder-only适合做生成任务，Encoder-Decoder做翻译与摘要

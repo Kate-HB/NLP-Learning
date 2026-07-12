@@ -115,6 +115,27 @@ Day 03 已推进：
 - 理解 padding、truncation、`attention_mask`
 - 已整理 `notes/day03.md`
 - 已新增 `03-NLP-Basic/tokenizer-basics.md`
+
+Day 04 已推进：
+
+- 学习三种分词粒度：基于单词、基于字符、基于子词（BPE、WordPiece、SentencePiece、Unigram）
+- 理解 `BertTokenizer` 和 `AutoTokenizer` 的区别：前者硬编码只支持 BERT，后者根据 checkpoint 自动推断
+- 理解 `##` 前缀：表示子词续接部分，decoder 会自动合并。例如 "transformer" → "Trans" + "##former"
+- 理解 tokenizer 三个原子操作：`tokenize()` 分词、`convert_tokens_to_ids()` 编码、`decode()` 解码
+- 理解 batch 维度：`torch.tensor(ids)` 形状 `(seq_len,)` 缺 batch 维，`torch.tensor([ids])` → `(1, seq_len)`
+- 理解 `tokenizer(sequence, return_tensors="pt")` 一步完成分词、转 ID、加 batch 维、加 attention_mask
+- 理解 padding：多句话组成 batch 时对齐到最长句，短句末尾填充 `pad_token_id`
+- 理解 attention mask：padding 位置标 0，告诉注意力层忽略这些位置
+- 通过实验验证：不加 attention mask 时 padding 句子 logits 会变化；加上后与单独输入结果一致
+- 理解 `[CLS]` 和 `[SEP]`：BERT 预训练时使用的特殊 token，`tokenizer()` 直调会自动添加
+- 掌握 padding 策略：`padding="longest"`、`padding="max_length"`、指定 `max_length`
+- 掌握 truncation：`truncation=True`、`max_length` 截断
+- 理解 `return_tensors`：`"pt"` 返回 PyTorch tensor，`"tf"` 返回 TensorFlow tensor，`"np"` 返回 NumPy array
+- 理解 tokenizer 和 model 必须使用相同 checkpoint：词表、特殊 token、分词算法必须一致
+- 已整理 `notes/day04.md`（含今日知识总结）
+- 已完成 `notebooks/day04.ipynb` 实验
+- 已产出 `notes/week01_summary.md` 周志文档
+
 Day 01 笔记：
 
 ```text
@@ -231,17 +252,20 @@ Transformers 5.13.0 未注册该 Pipeline，而课程示例仍依赖它。已降
 
 继续学习建议：
 
-- 当前路线已重构为 `resources/roadmap.md`
-- 先按 `resources/weeks/week01.md` 进入 Hugging Face Chapter 2
-- Day 03 重点：Tokenizer、词表、`AutoTokenizer`、`input_ids`、特殊 Token、Padding、Truncation、Attention Mask
+- 当前路线：`resources/roadmap.md` → `resources/weeks/week01.md`
+- Day 05 重点：padding、truncation、batch 的深入练习，3 条不同长度文本组成 batch
+- Day 06 重点：手动推理（tokenizer + model + softmax），完整走通 logits 到 label 的过程
+- Day 07：Week 1 复盘，重跑 Day 02 到 Day 06，画出完整推理流程图
 - 后续每周用一个实验或项目验证理解
 
 预期下一批产出：
 
 ```text
-notes/day04.md
-notebooks/day04-tokenizer.ipynb
-03-NLP-Basic/tokenizer-basics.md
+notes/day05.md
+notebooks/day05.ipynb
+notes/day06.md
+notebooks/day06.ipynb
+notes/week01_summary.md
 ```
 
 ## 恢复上下文顺序
