@@ -53,6 +53,7 @@ CUDA Runtime: 12.8
 CUDA available: True
 Transformers: 4.57.3
 Datasets: 5.0.0
+Accelerate: 1.14.0
 ```
 
 关键约束：
@@ -136,6 +137,21 @@ Day 04 已推进：
 - 已完成 `notebooks/day04.ipynb` 实验
 - 已产出 `notes/week01_summary.md` 周志文档
 
+Day 05 已推进：
+
+- 掌握训练一步：`loss = model(**batch).loss` → `loss.backward()` → `optimizer.step()`，`AdamW` 为 BERT 微调标配优化器
+- 学习 GLUE/MRPC 数据集：`load_dataset("glue", "mrpc")`，3668/408/1725 三集，`ClassLabel` 映射 0=not_equivalent, 1=equivalent
+- 理解 BERT 句子对输入：`[CLS] A [SEP] B [SEP]`，`token_type_ids` 区分两句（0/1），源自预训练的"下一句预测"任务（DistilBERT 无此层）
+- 掌握 `Dataset.map()` + `batched=True`：Rust tokenizer 加速批预处理，Apache Arrow 格式惰性加载，num_proc 可多进程并行
+- 掌握动态填充：`DataCollatorWithPadding` 对齐到 batch 内最长而非全局最大，tokenize 时省略 padding 节省算力
+- 掌握 Trainer 全流程：`TrainingArguments`（必传 output_dir）→ `AutoModelForSequenceClassification`（随机初始化 classification head）→ `Trainer` 组装 → `train()` → `predict()`
+- 掌握评估：`Trainer.predict()` 返回 predictions/logits + label_ids；`np.argmax(logits, axis=-1)` 转标签；`evaluate.load("glue", "mrpc")` 计算 accuracy/F1
+- 掌握 `compute_metrics`：每 epoch 自动调用，配合 `eval_strategy="epoch"`（非旧版 `evaluation_strategy`）
+- 训练实践：bert-base-uncased + MRPC 3 epochs → accuracy 0.833, F1 0.885
+- 解决三个问题：`evaluation_strategy` 重命名、accelerate 依赖、训练后重跑 model 定义 cell 导致权重丢失
+- 已整理 `notes/day05.md`（含今日知识总结）、`05-BERT/bert-finetuning.md`
+- 已完成 `notebooks/day05-test.ipynb`、`notebooks/day05-train.ipynb`
+
 Day 01 笔记：
 
 ```text
@@ -204,9 +220,31 @@ hf auth whoami
 
 Hugging Face Hub 中的模型可能属于 GGUF、Flair 等其他格式，不能直接传给 Transformers `pipeline()`。
 
+### `evaluation_strategy` 参数重命名
+
+根因：Transformers 4.57 将 `evaluation_strategy` 重命名为 `eval_strategy`。
+
+解决：使用 `TrainingArguments(output_dir, eval_strategy="epoch")`。
+
+### Accelerate 未安装导致 Trainer 报错
+
+根因：`Trainer` 依赖 `accelerate>=0.26.0`，Conda 环境未预装。
+
+解决：`D:/Soft/Conda/python.exe -m pip install "accelerate>=0.26.0"` 后重启 Kernel。
+
+### 训练后评估指标骤降
+
+根因：`trainer.train()` 后重新执行 model 定义 cell（`AutoModelForSequenceClassification.from_pretrained(checkpoint)`）导致 classification head 回到随机初始化。
+
+解决：train 后立刻 evaluate，不重新创建 model；或从保存的 checkpoint 加载已训练权重。
+
 ### `Unknown task question-answering`
 
 Transformers 5.13.0 未注册该 Pipeline，而课程示例仍依赖它。已降级并固定为 `4.57.3`。
+
+### 交叉环境 pip 安装
+
+教训：Notebook Kernel 使用 `D:\Soft\Conda\python.exe`，与系统 Python（C 盘）是不同环境。`pip install` 需显式指定 `D:/Soft/Conda/python.exe -m pip install <pkg>` 才能装到正确环境。
 
 ## 模型使用原则
 
@@ -253,19 +291,16 @@ Transformers 5.13.0 未注册该 Pipeline，而课程示例仍依赖它。已降
 继续学习建议：
 
 - 当前路线：`resources/roadmap.md` → `resources/weeks/week01.md`
-- Day 05 重点：padding、truncation、batch 的深入练习，3 条不同长度文本组成 batch
 - Day 06 重点：手动推理（tokenizer + model + softmax），完整走通 logits 到 label 的过程
 - Day 07：Week 1 复盘，重跑 Day 02 到 Day 06，画出完整推理流程图
-- 后续每周用一个实验或项目验证理解
+- Week 2：PyTorch 最小训练基础（Tensor、Dataset、nn.Module、autograd、训练循环）
 
 预期下一批产出：
 
 ```text
-notes/day05.md
-notebooks/day05.ipynb
 notes/day06.md
 notebooks/day06.ipynb
-notes/week01_summary.md
+notes/week01_summary.md  （已产出）
 ```
 
 ## 恢复上下文顺序
