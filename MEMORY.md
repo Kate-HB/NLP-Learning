@@ -152,6 +152,22 @@ Day 05 已推进：
 - 已整理 `notes/day05.md`（含今日知识总结）、`05-BERT/bert-finetuning.md`
 - 已完成 `notebooks/day05-test.ipynb`、`notebooks/day05-train.ipynb`
 
+Day 06 已推进：
+
+- 拆开 Trainer 黑盒，手写 PyTorch 训练循环（forward → backward → optimizer.step → scheduler.step → zero_grad）
+- 掌握数据准备：`remove_columns`、`rename_column`、`set_format("torch")`、`DataLoader` + `collate_fn`
+- 理解优化器 AdamW：Adam + 权重衰减正则化，BERT 微调标配
+- 理解学习率调度器：线性衰减从 5e-5 到 0，总步数 = epochs × len(train_dataloader)
+- 掌握 epoch、batch size、学习率三者的关系：总步数决定衰减斜率，batch size 翻倍学习率通常也翻倍
+- 理解微调本质：不是"加数据跑"，而是以预训练权重为起点，反向传播更新所有权重，把通用能力转化为任务能力
+- 掌握评估循环：`model.eval()` + `torch.no_grad()` + `metric.add_batch()` + `metric.compute()`
+- 掌握 Accelerate：`accelerator.backward()` 替代 `loss.backward()`，`prepare()` 自动设备分发，Trainer 内部已集成
+- 理解分布式训练：数据并行（每卡完整模型，梯度平均）vs 模型并行（切分模型），BERT-base 单卡即够
+- 完成 MRPC 手动训练循环实验
+- 产出 SST-2 Trainer 训练脚本 `day06-sst-train.py`
+- 已整理 `notes/day06.md`（含今日知识总结）
+- 已完成 `notebooks/day06.ipynb` 实验
+
 Day 01 笔记：
 
 ```text
@@ -291,16 +307,14 @@ Transformers 5.13.0 未注册该 Pipeline，而课程示例仍依赖它。已降
 继续学习建议：
 
 - 当前路线：`resources/roadmap.md` → `resources/weeks/week01.md`
-- Day 06 重点：手动推理（tokenizer + model + softmax），完整走通 logits 到 label 的过程
-- Day 07：Week 1 复盘，重跑 Day 02 到 Day 06，画出完整推理流程图
+- Day 07：Week 1 复盘，重跑 Day 02 到 Day 06，画出完整推理和训练流程图
 - Week 2：PyTorch 最小训练基础（Tensor、Dataset、nn.Module、autograd、训练循环）
 
 预期下一批产出：
 
 ```text
-notes/day06.md
-notebooks/day06.ipynb
-notes/week01_summary.md  （已产出）
+notes/day07.md
+notebooks/day07.ipynb
 ```
 
 ## 恢复上下文顺序
