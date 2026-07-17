@@ -168,6 +168,24 @@ Day 06 已推进：
 - 已整理 `notes/day06.md`（含今日知识总结）
 - 已完成 `notebooks/day06.ipynb` 实验
 
+Day 07 已推进：
+
+- 学习训练诊断：损失曲线、准确率曲线、收敛、过拟合、欠拟合、不稳定曲线的特征与解决方案
+- 掌握模型卡片概念：预训练模型的用途、局限性、偏见信息应在其模型卡片上展示
+- 掌握 Datasets 库三大加载方式：本地文件、远程 URL、Hugging Face Hub（`load_dataset()` + `data_files` + `field`）
+- 理解 `data_files` 灵活用法：单文件路径、文件列表、`{"train": ..., "test": ...}` 字典
+- 掌握数据处理操作：`filter()`、`map()`（含 `batched=True` 加速）、`rename_column`、`remove_columns`、`add_column`
+- 理解 `batched=True` 原理：Rust tokenizer 批量处理可快 30 倍，`num_proc` 对快速 tokenizer 帮助有限
+- 掌握大数据处理：内存映射（Apache Arrow）、流式处理（`streaming=True`、`IterableDataset`）
+- 掌握 GitHub Issues API 认证：python-dotenv + .env + Bearer token，解决未认证限流问题
+- 掌握从零创建数据集：`requests.get()` → JSONL → `Dataset.from_pandas()` / `load_dataset("json")` → `push_to_hub()`
+- 掌握语义搜索流程：文本嵌入（CLS pooling）→ FAISS 索引 → `get_nearest_examples()` 相似文档检索
+- 理解 FAISS：高效向量相似度搜索库，`add_faiss_index()` 建索引
+- 解决多个实际问题：GitHub API 限流认证、Windows num_proc spawn 问题、JSONL schema 冲突、faiss-gpu 不可用、get_embeddings 批处理加速
+- 已整理 `notes/day07.md`（含今日知识总结）
+- 已完成 `notebooks/day07.ipynb` 实验（GitHub Issues 数据集获取与清洗）
+- 已完成 `notebooks/day07-2.ipynb` 实验（语义搜索与 FAISS）
+
 Day 01 笔记：
 
 ```text
@@ -295,26 +313,40 @@ Transformers 5.13.0 未注册该 Pipeline，而课程示例仍依赖它。已降
 - 回答问题时，优先用用户当前正在看的文件和选中文本作为上下文。
 - 概念解释遵循：先讲直观含义，再给简单例子，最后说明技术原理。
 - 遇到环境或代码报错时，先解释错误含义，再给最小修复命令，不主动扩大范围。
-- 每天学习结束时，需要整理当天学习内容到 `notes/dayXX.md`。
-- 每天笔记末尾必须添加 `## 今日知识总结`，格式参考 `notes/day01.md`：使用多个 `### 小标题`，每个小标题下写段落式解释。
-- 每天总结要覆盖：今天学了什么、关键概念是什么、容易混淆点是什么、今天解决了什么问题、下一步应该学什么。
-- 如果当天内容属于某个主题目录，也要同步整理到对应主题文档。例如 Transformer 相关内容整理到 `04-Transformer/transformer-basics.md`。
-- 每日整理时要修正明显错误表述、图片链接、Markdown 格式和路径问题。
-- 写入文件后要验证：无乱码、总结只有一处、关键旧错误表述已清除。
-- 更新学习进度后，需要同步更新 `MEMORY.md`，方便后续继续学习。
+- 每天学习结束时，需要完成以下三项工作：
+
+### 1. 整理笔记正文
+
+- 笔记格式参考 `notes/day06.md`：`# Day XX：简短主题` → 一句话概述 → `##` 大节（代码精简、有注释、节末关键点总结、表格辅助对比）→ `## 今日知识总结`
+- 补充缺失的概念解释、代码示例和关键注意事项
+- 修正错误表述、错别字、不准确的术语
+- 修复图片链接、Markdown 格式和路径问题
+- 确保代码片段可运行、参数名与实际使用一致
+- 删除重复内容和过时信息
+
+### 2. 添加今日知识总结
+
+- 在 `notes/dayXX.md` 末尾追加 `## 今日知识总结`
+- 格式参考 `notes/day06.md`：使用多个 `### 小标题`，每个小标题下写**段落式解释**（非列表项）
+- 覆盖：今天学了什么、关键概念是什么、容易混淆点是什么、今天解决了什么问题、下一步应该学什么
+
+### 3. 同步更新
+
+- 更新 `MEMORY.md` 中的学习进度
+- 如果当天内容属于某个主题目录，同步整理到对应主题文档（如 Transformer → `04-Transformer/`，语义搜索 → `08-RAG/`）
+- 写入文件后验证：无乱码、总结只有一处、关键旧错误表述已清除
 ## 下一步
 
 继续学习建议：
 
-- 当前路线：`resources/roadmap.md` → `resources/weeks/week01.md`
-- Day 07：Week 1 复盘，重跑 Day 02 到 Day 06，画出完整推理和训练流程图
-- Week 2：PyTorch 最小训练基础（Tensor、Dataset、nn.Module、autograd、训练循环）
+- 当前路线：`resources/roadmap.md` → `resources/weeks/week02.md`
+- Day 08：PyTorch 最小训练基础（Tensor 操作、Dataset/DataLoader、nn.Module、autograd、手写训练循环）
 
 预期下一批产出：
 
 ```text
-notes/day07.md
-notebooks/day07.ipynb
+notes/day08.md
+notebooks/day08.ipynb
 ```
 
 ## 恢复上下文顺序

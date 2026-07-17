@@ -47,6 +47,7 @@ models/
 !/data/.gitkeep
 /outputs/*
 !/outputs/.gitkeep
+*.jsonl
 
 # Logs and temporary files
 *.log
