@@ -186,6 +186,24 @@ Day 07 已推进：
 - 已完成 `notebooks/day07.ipynb` 实验（GitHub Issues 数据集获取与清洗）
 - 已完成 `notebooks/day07-2.ipynb` 实验（语义搜索与 FAISS）
 
+Day 08 已推进：
+
+- 掌握 `AutoTokenizer.train_new_from_iterator()`：从语料库训练新 tokenizer，保留旧 tokenizer 算法只换词表
+- 理解 tokenizer 训练 vs 模型训练：前者是统计过程（确定性），后者是随机梯度下降（随机性）
+- 掌握语料库生成器模式：函数返回生成器可多次使用，纯生成器只能用一次
+- 理解快速 tokenizer（Rust）vs 慢速 tokenizer（Python）：快速版支持偏移映射、并行批处理
+- 掌握 BatchEncoding 对象：字典子类，提供 `tokens()`、`word_ids()`、`word_to_chars()`、`token_to_chars()` 等方法
+- 理解 char/token/word 三层概念和偏移映射机制：偏移始终是原始文本绝对位置，空格占位但不被 token 覆盖
+- 理解 `AutoXxx` 类：自动选架构类（非自动选任务），checkpoint 决定模型，Auto 根据 config 加载对应实现
+- 复现 NER 管道：`AutoModelForTokenClassification`，9 标签（CoNLL-2003: O + B/I-PER/ORG/LOC/MISC），偏移量实体分组
+- 复现 QA 管道：start/end logits，`sequence_ids()` 屏蔽 question，argmax 展平还原，偏移量提取答案原文
+- 掌握标准化（normalization）和预分词（pre-tokenization）：BERT/GPT-2/T5 三种预分词规则差异
+- 了解三种子词算法：BPE（合并常见对）、WordPiece（得分制）、Unigram（大词表删除低频）
+- 理解 B/I 标签的 IOB2 格式：B 标记实体开头，I 标记内部，O 标记非实体
+- 掌握 QA 长文本处理：`return_overflowing_tokens=True` + `stride` 滑动窗口分块
+- 已整理 `notes/day08.md`（含今日知识总结）
+- 已完成 `notebooks/day08-train_newtokenizer.ipynb` 实验
+
 Day 01 笔记：
 
 ```text
@@ -276,6 +294,14 @@ Hugging Face Hub 中的模型可能属于 GGUF、Flair 等其他格式，不能�
 
 Transformers 5.13.0 未注册该 Pipeline，而课程示例仍依赖它。已降级并固定为 `4.57.3`。
 
+### `code_search_net` 数据集不可用
+
+根因：数据集在 HuggingFace Hub 路径已更新，且国内直连不可达。
+
+解决：
+- 路径：`"code_search_net"` → `"code-search-net/code_search_net"`
+- 国内需在 `load_dataset` 前设置 `os.environ["HF_ENDPOINT"] = "https://hf-mirror.com"`
+
 ### 交叉环境 pip 安装
 
 教训：Notebook Kernel 使用 `D:\Soft\Conda\python.exe`，与系统 Python（C 盘）是不同环境。`pip install` 需显式指定 `D:/Soft/Conda/python.exe -m pip install <pkg>` 才能装到正确环境。
@@ -340,13 +366,13 @@ Transformers 5.13.0 未注册该 Pipeline，而课程示例仍依赖它。已降
 继续学习建议：
 
 - 当前路线：`resources/roadmap.md` → `resources/weeks/week02.md`
-- Day 08：PyTorch 最小训练基础（Tensor 操作、Dataset/DataLoader、nn.Module、autograd、手写训练循环）
+- Day 09：PyTorch 最小训练基础（Tensor 操作、Dataset/DataLoader、nn.Module、autograd、手写训练循环）
 
 预期下一批产出：
 
 ```text
-notes/day08.md
-notebooks/day08.ipynb
+notes/day09.md
+notebooks/day09.ipynb
 ```
 
 ## 恢复上下文顺序
