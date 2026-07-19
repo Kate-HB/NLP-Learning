@@ -204,6 +204,20 @@ Day 08 已推进：
 - 已整理 `notes/day08.md`（含今日知识总结）
 - 已完成 `notebooks/day08-train_newtokenizer.ipynb` 实验
 
+Day 09 已推进：
+
+- 手写 BPE 算法：`compute_pair_freqs()` + `merge_pair()` 训练循环，`tokenize()` 推理
+- 理解 WordPiece vs BPE：前者选似然度提升最大的对，后者选频率最高的对
+- 手写 Unigram + Viterbi：`encode_word()` 动态规划分词，`compute_loss()` + `compute_scores()` 剪枝训练
+- 理解 Viterbi 回溯：`best_segmentations` 每个位置保存最后一个 token 的起始索引，从末尾往前跳
+- 理解 `tokenizers` 库模块化流水线：Normalizer → PreTokenizer → Model → PostProcessor → Decoder
+- 区分"Tokenizer 模型"（词表+分词规则）和"Transformer 模型"（神经网络）
+- 理解 `Whitespace()` 不只在空白处分割，而是所有非单词字符处
+- 从零构建 BERT WordPiece tokenizer：``BertNormalizer`` + ``Whitespace`` pre-tokenizer + ``WordPieceTrainer``
+- 掌握 `PreTrainedTokenizerFast` 包装 → `save_pretrained()` / `push_to_hub()`
+- 已整理 `notes/day09.md`（含今日知识总结）
+- 已完成 `notebooks/day09-BPE.ipynb`、`day09-wordpiece.ipynb`、`day09-unigram.ipynb`、`day09-bulidberttokenizer.ipynb` 实验
+
 Day 01 笔记：
 
 ```text
@@ -328,6 +342,7 @@ Transformers 5.13.0 未注册该 Pipeline，而课程示例仍依赖它。已降
 - NLP 基础放入 `03-NLP-Basic`
 - Transformer 原理与实现放入 `04-Transformer`
 - 每周计划放入 `resources/weeks/weekXX.md`
+- 周志放入 `notes/weekXX_summary.md`
 - 项目放入 `projects/p1-text-classification`、`projects/p2-rag-qa`、`projects/p3-llm-app`
 - 主 README 只保留路线、索引、目标和阶段产出
 - 新内容优先写入对应主题文档，避免所有内容堆积在每日笔记
@@ -366,13 +381,13 @@ Transformers 5.13.0 未注册该 Pipeline，而课程示例仍依赖它。已降
 继续学习建议：
 
 - 当前路线：`resources/roadmap.md` → `resources/weeks/week02.md`
-- Day 09：PyTorch 最小训练基础（Tensor 操作、Dataset/DataLoader、nn.Module、autograd、手写训练循环）
+- Day 10：PyTorch 最小训练基础（Tensor 操作、Dataset/DataLoader、nn.Module、autograd、手写训练循环）
 
 预期下一批产出：
 
 ```text
-notes/day09.md
-notebooks/day09.ipynb
+notes/day10.md
+notebooks/day10.ipynb
 ```
 
 ## 恢复上下文顺序
