@@ -218,6 +218,20 @@ Day 09 已推进：
 - 已整理 `notes/day09.md`（含今日知识总结）
 - 已完成 `notebooks/day09-BPE.ipynb`、`day09-wordpiece.ipynb`、`day09-unigram.ipynb`、`day09-bulidberttokenizer.ipynb` 实验
 
+Day 10 已推进：
+
+- 学习 Token 分类任务：NER（命名实体识别）、POS（词性标注）、Chunking（分块）三者的共性与区别
+- 理解 IOB2 标注格式：B-（实体开头）、I-（实体内部）、O（非实体），CoNLL-2003 共 9 标签（O + B/I × 4 类）
+- 掌握子词分词后的标签对齐问题：`is_split_into_words=True` + `word_ids()` + `align_labels_with_tokens()`
+- 理解标签对齐三条规则：特殊 token 标 -100、同词后续子词 B- 转 I-、-100 被交叉熵损失忽略
+- 掌握 `DataCollatorForTokenClassification`：用 -100 填充标签，确保 padding 位置不计入损失
+- 掌握 seqeval 实体级评估：按实体边界+类别匹配计算 F1，而非 token 级 accuracy
+- 完成 BERT NER 微调全流程：CoNLL-2003 加载 → 标签对齐 → DataCollator → seqeval → AutoModelForTokenClassification → Trainer
+- 解决 datasets 5.0.0 脚本不支持问题：`load_dataset("conll2003", revision="refs/convert/parquet")`
+- 再次确认 `evaluation_strategy` → `eval_strategy` 重命名（Transformers 4.57）
+- 已整理 `notes/day10.md`（含今日知识总结）
+- 已完成 `notebooks/day10-tokenclassification.ipynb` 实验
+
 Day 01 笔记：
 
 ```text
@@ -316,6 +330,12 @@ Transformers 5.13.0 未注册该 Pipeline，而课程示例仍依赖它。已降
 - 路径：`"code_search_net"` → `"code-search-net/code_search_net"`
 - 国内需在 `load_dataset` 前设置 `os.environ["HF_ENDPOINT"] = "https://hf-mirror.com"`
 
+### `conll2003` 数据集脚本不支持
+
+根因：datasets 5.0.0 不再支持旧的脚本式数据集加载。
+
+解决：指定 Parquet 格式分支 `load_dataset("conll2003", revision="refs/convert/parquet")`。
+
 ### 交叉环境 pip 安装
 
 教训：Notebook Kernel 使用 `D:\Soft\Conda\python.exe`，与系统 Python（C 盘）是不同环境。`pip install` 需显式指定 `D:/Soft/Conda/python.exe -m pip install <pkg>` 才能装到正确环境。
@@ -380,14 +400,15 @@ Transformers 5.13.0 未注册该 Pipeline，而课程示例仍依赖它。已降
 
 继续学习建议：
 
-- 当前路线：`resources/roadmap.md` → `resources/weeks/week02.md`
-- Day 10：PyTorch 最小训练基础（Tensor 操作、Dataset/DataLoader、nn.Module、autograd、手写训练循环）
+- 当前路线：`resources/roadmap.md` → `resources/weeks/week05.md`
+- 下一步：传统 NLP baseline（TF-IDF + 分类器）对比 BERT，理解 baseline 的价值
 
 预期下一批产出：
 
 ```text
-notes/day10.md
-notebooks/day10.ipynb
+notes/day11.md
+notebooks/day11.ipynb
+03-NLP-Basic/tfidf_classifier.py
 ```
 
 ## 恢复上下文顺序
