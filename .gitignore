@@ -47,6 +47,9 @@ models/
 !/data/.gitkeep
 /outputs/*
 !/outputs/.gitkeep
+projects/**/outputs/
+projects/**/data/processed/
+projects/p4-expression-coach/data/lexicon_full.csv
 *.jsonl
 
 # Logs and temporary files

@@ -232,6 +232,18 @@ Day 10 已推进：
 - 已整理 `notes/day10.md`（含今日知识总结）
 - 已完成 `notebooks/day10-tokenclassification.ipynb` 实验
 
+Day 11 已推进：
+
+- 学习 MLM（掩码语言建模）微调：在 IMDB 电影评论上微调 DistilBERT 做领域适应
+- 理解 MLM 数据预处理：拼接所有文本 + 等长分块（chunk），与分类任务的逐条 tokenize 不同
+- 掌握 `DataCollatorForLanguageModeling`：每 batch 动态随机遮蔽，80-10-10 拆分（80% MASK、10% 随机词、10% 原词）
+- 手写全词掩码（WWM）collator：`word_ids()` 获取 token→word 映射，整词一起遮蔽，避免 subword 泄漏
+- 解决 `word_ids` KeyError：`TrainingArguments` 默认 `remove_unused_columns=True` 会删除模型 `forward()` 不接受的列，需显式设为 `False`
+- 掌握语言模型评估：困惑度 `Perplexity = exp(cross_entropy_loss)`，微调后从 62.55 降到 24.60
+- 使用微调模型推理：`pipeline("fill-mask", model="./output_dir")` 加载本地模型
+- 已整理 `notes/day11.md`（含今日知识总结）
+- 已完成 `notebooks/day11-masktoken.ipynb` 实验
+
 Day 01 笔记：
 
 ```text
@@ -402,14 +414,6 @@ Transformers 5.13.0 未注册该 Pipeline，而课程示例仍依赖它。已降
 
 - 当前路线：`resources/roadmap.md` → `resources/weeks/week05.md`
 - 下一步：传统 NLP baseline（TF-IDF + 分类器）对比 BERT，理解 baseline 的价值
-
-预期下一批产出：
-
-```text
-notes/day11.md
-notebooks/day11.ipynb
-03-NLP-Basic/tfidf_classifier.py
-```
 
 ## 恢复上下文顺序
 

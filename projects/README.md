@@ -1,12 +1,13 @@
 # Projects
 
-本目录存放 8 周路线中的三个项目。
+本目录存放 8 周路线中的三个主线项目，以及一个表达分析扩展项目。
 
 ## 项目顺序
 
 1. [P1 中文文本分类](p1-text-classification/README.md)
 2. [P2 RAG 文档问答](p2-rag-qa/README.md)
 3. [P3 LLM 应用 Demo](p3-llm-app/README.md)
+4. [P4 语言表达教练](p4-expression-coach/README.md)
 
 ## 项目要求
 
@@ -19,4 +20,3 @@
 - 指标或结果
 - 错误分析
 - 后续改进
-

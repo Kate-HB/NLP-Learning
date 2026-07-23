@@ -1,0 +1,10 @@
+# 三个项目共用环境；PyTorch 可按显卡和 CUDA 版本先单独安装。
+numpy>=1.26,<3
+torch>=2.2
+transformers==4.57.3
+datasets>=4.0,<5
+accelerate>=1.10,<2
+scikit-learn>=1.4,<2
+sentence-transformers>=5.0,<6
+gradio>=5.0,<6
+openpyxl>=3.1,<4

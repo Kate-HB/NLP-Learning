@@ -13,12 +13,15 @@
 
 - [56 天总路线](resources/roadmap.md)
 - [每周计划索引](resources/README.md)
+- [Chapter 7.3–7.7 主要 NLP 任务知识总结](notes/chapter07_tasks_summary.md)
+- [NLP 与 Transformer 完整理论知识总结](notes/nlp_transformer_theory_summary.md)
 
 ## 项目入口
 
 - [P1 中文文本分类](projects/p1-text-classification/README.md)
 - [P2 RAG 文档问答](projects/p2-rag-qa/README.md)
 - [P3 LLM 应用 Demo](projects/p3-llm-app/README.md)
+- [P4 语言表达教练](projects/p4-expression-coach/README.md)
 
 ## 新目录结构
 
@@ -88,4 +91,3 @@ NLP-Learning/
 
 ## 今日知识总结
 ```
-
