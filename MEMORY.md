@@ -244,6 +244,21 @@ Day 11 已推进：
 - 已整理 `notes/day11.md`（含今日知识总结）
 - 已完成 `notebooks/day11-masktoken.ipynb` 实验
 
+Day 12 已推进：
+
+- 学习 Seq2Seq 翻译任务：用 Helsinki-NLP/opus-mt-en-zh（MarianMT）做英译中
+- 掌握 `text_target` 参数：tokenizer 据此用不同规则处理源语言和目标语言（英语空格分词、中文按字切分）
+- 理解 `DataCollatorForSeq2Seq`：动态填充 + labels 用 -100 忽略 + 从 labels 移位生成 `decoder_input_ids`
+- 理解 `decoder_input_ids` 移位原理：labels 右移一位，开头补 `<s>`，实现 teacher forcing
+- 掌握 `predict_with_generate=True`：评估时用 `generate()` 逐 token 生成，模拟真实推理
+- 掌握 SacreBLEU 中文评估：`tokenize="zh"` 调用 jieba 分词，解决中文 n-gram 全为 0 的问题
+- 理解训练/验证/测试集关系：按用法区分而非名称，验证集反复用、测试集只跑一次
+- 解决 kde4 RuntimeError → opus100 替代（datasets 5.0.0 兼容）
+- 解决 sentencepiece/sacremoses 安装、HF 网络镜像、验证集未 tokenize 等问题
+- 微调后 BLEU 48.06 → 49.52（同域数据提升有限，预训练已覆盖）
+- 已整理 `notes/day12.md`（含今日知识总结）
+- 已完成 `notebooks/day12-translation.ipynb` 实验
+
 Day 01 笔记：
 
 ```text
@@ -412,8 +427,8 @@ Transformers 5.13.0 未注册该 Pipeline，而课程示例仍依赖它。已降
 
 继续学习建议：
 
-- 当前路线：`resources/roadmap.md` → `resources/weeks/week05.md`
-- 下一步：传统 NLP baseline（TF-IDF + 分类器）对比 BERT，理解 baseline 的价值
+- 当前路线：`resources/roadmap.md` → `resources/weeks/week06.md`
+- 下一步：GPT、生成与解码策略（Week 6），或补 Week 5 的 TF-IDF baseline 对比
 
 ## 恢复上下文顺序
 
