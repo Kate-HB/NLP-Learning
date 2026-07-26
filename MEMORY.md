@@ -259,6 +259,22 @@ Day 12 已推进：
 - 已整理 `notes/day12.md`（含今日知识总结）
 - 已完成 `notebooks/day12-translation.ipynb` 实验
 
+Day 13 已推进：
+
+- 学习文本摘要任务：延续 Day 12 的 Seq2Seq，从翻译转向摘要生成
+- 掌握多语言数据集本地加载：`huggingface-cli download` 下载原始 JSONL → `load_dataset("json", data_files={...})` 加载
+- 理解 datasets 5.0.0 对旧脚本的限制：`buruzaemon/amazon_reviews_multi` 含 `.py` 脚本被拒绝，需直接下载原始文件绕过
+- 掌握双语数据处理：中英文过滤和分句需分别处理——英文 `split()`+`sent_tokenize()`，中文 `len()` 字符数+正则分句
+- 理解 `concatenate_datasets()`：合并中英文书籍评论（`product_category == "book"`），shuffle 防止语言偏好
+- 学习 ROUGE 评估指标：rouge1/rouge2/rougeL/rougeLsum，精确度/召回率/F1，新版 evaluate 返回值无 `.mid` 属性
+- 掌握 Lead-3 Baseline：取前三句作摘要作为简单 baseline，NLP 项目先建 baseline 再试复杂模型
+- 掌握 mT5 多语言摘要模型：T5 架构的 Text-to-Text 范式，`google/mt5-small`
+- 掌握 `Seq2SeqTrainingArguments`：`predict_with_generate=True` 评估时调 `generate()`，自定义 `compute_metrics()` 解码后算 ROUGE
+- 解决多个版本问题：ROUGE `AggregateScore` 已变、`punkt_tab` 需下载、`tokenizer=` → `processing_class=`
+- 数据集规模：过滤后 train 47,886 + val 1,144 + test 1,213（中英书籍评论合并）
+- 已整理 `notes/day13.md`（含今日知识总结）
+- 已完成 `notebooks/day13-summary.ipynb` 实验（未实际训练，因训练时间过长跳过 `trainer.train()`）
+
 Day 01 笔记：
 
 ```text
@@ -428,7 +444,7 @@ Transformers 5.13.0 未注册该 Pipeline，而课程示例仍依赖它。已降
 继续学习建议：
 
 - 当前路线：`resources/roadmap.md` → `resources/weeks/week06.md`
-- 下一步：GPT、生成与解码策略（Week 6），或补 Week 5 的 TF-IDF baseline 对比
+- 下一步：Day 14 进入 GPT 与生成——Decoder-only 架构、自回归生成、解码策略（greedy、beam search、top-k、top-p）
 
 ## 恢复上下文顺序
 

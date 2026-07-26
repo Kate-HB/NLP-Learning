@@ -1,5 +1,8 @@
 # Hugging Face 主要 NLP 任务：从数据到评估的完整知识总结
-
+[图示](03-NLP-Basic\pictures\NLP任务框架.png)
+[图示](03-NLP-Basic\pictures\NLP数据到标签.png)
+[图示](03-NLP-Basic\pictures\NLP五大任务.png)
+[图示](03-NLP-Basic\pictures\NLP掩码机制.png)
 > 范围：Hugging Face LLM Course Chapter 7.3–7.7，并结合本项目 Day 01–10 已完成的 Tokenizer、Datasets、Trainer、Accelerate、BERT、NER、QA 管道与训练循环实验。
 
 ## 1. 这一阶段到底在学什么
