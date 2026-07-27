@@ -395,7 +395,7 @@ Transformer 不是单独一个注意力层，而是一套完整的表示、信�
 
 完整数据流可以概括为：
 
-原始文本 → Token 序列 → Token ID → Token Embedding 与位置表示 → 多层 Transformer Block → 上下文化隐藏状态 → 任务 Head → Logits → 任务结果
+原始文本 → Token 序列 → Token ID → Token Embedding 与位置表示 → 多层 Transformer Block → 上下文隐藏状态 → 任务 Head → Logits → 任务结果
 
 **Transformer Block**是重复堆叠的基本层。**注意力头（Attention Head）**是一次独立的注意力关系计算；**前馈神经网络（Feed-Forward Network，FFN）**是逐位置进行非线性变换的子层；**任务头（Task Head）**则把最终隐藏状态变成特定任务的输出。Encoder Block 通常包含自注意力和 FFN；Decoder Block 通常包含带因果掩码的自注意力、可选的交叉注意力和 FFN。
 

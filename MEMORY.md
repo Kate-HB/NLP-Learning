@@ -275,6 +275,24 @@ Day 13 已推进：
 - 已整理 `notes/day13.md`（含今日知识总结）
 - 已完成 `notebooks/day13-summary.ipynb` 实验（未实际训练，因训练时间过长跳过 `trainer.train()`）
 
+Day 14 已推进：
+
+- 完成中文情感分类完整微调 pipeline：从数据准备到模型评估
+- 经历两轮数据切换：TIX007 合成数据（模板化严重，1 epoch 100%）→ zzhdbw 真实对话数据（8 分类，4,159 条）
+- 排查训练集/验证集数据重叠（828 条交集），用 `filter()` 过滤
+- 排查合成数据 100% 准确率根因：验证未训练 baseline（16.65% 随机水平），训练后同样 100%，确认是数据模板问题
+- 掌握 CSV 数据预处理：`train_test_split(stratify=label)` 分层抽样 70/15/15，保持标签分布一致性
+- 解决 `evaluate` 库与本地 `evaluate.py` 文件同名冲突
+- 解决 label 映射错乱：`zip(set(), set())` 无序导致错位，改用 `sorted(set(tuple))`
+- 掌握 `num_labels + ignore_mismatched_sizes=True` 的标准用法
+- 解决 matplotlib 中文乱码：`plt.rcParams["font.sans-serif"] = ["SimHei"]`
+- 掌握混淆矩阵 `labels`（控制顺序）和 `display_labels`（控制标签文字）的区别
+- 解决 KeyboardInterrupt：`push_to_hub=True` 网络问题导致训练结束时卡住
+- 最终结果：bert-base-chinese 3 epochs, train 97.6% / val 88.3% / test 87.2%，训练前 baseline 12.5%
+- 已整理 `notes/day14.md`（含今日知识总结）
+- 已产出 `projects/p1-text-classification/text-classification.ipynb`（完整实验）
+- 已更新 `projects/p1-text-classification/README.md`
+
 Day 01 笔记：
 
 ```text
@@ -444,7 +462,7 @@ Transformers 5.13.0 未注册该 Pipeline，而课程示例仍依赖它。已降
 继续学习建议：
 
 - 当前路线：`resources/roadmap.md` → `resources/weeks/week06.md`
-- 下一步：Day 14 进入 GPT 与生成——Decoder-only 架构、自回归生成、解码策略（greedy、beam search、top-k、top-p）
+- 下一步：Day 15 进入 GPT 与生成——Decoder-only 架构、自回归生成、解码策略（greedy、beam search、top-k、top-p）
 
 ## 恢复上下文顺序
 
