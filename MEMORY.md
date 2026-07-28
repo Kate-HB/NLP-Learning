@@ -462,7 +462,20 @@ Transformers 5.13.0 未注册该 Pipeline，而课程示例仍依赖它。已降
 继续学习建议：
 
 - 当前路线：`resources/roadmap.md` → `resources/weeks/week06.md`
-- 下一步：Day 15 进入 GPT 与生成——Decoder-only 架构、自回归生成、解码策略（greedy、beam search、top-k、top-p）
+Day 15 已推进：
+
+- 完成 BERT 中文问答微调全流程：Chinese-SQuAD v2 + bert-base-chinese + No-Answer 支持
+- 掌握 HuggingFace Hub 手动数据交互：`huggingface-cli download` 下载 parquet → `load_dataset("parquet", data_files={...})` 本地加载
+- 掌握空答案处理：训练时标 `(0, 0)` → CLS token，推理时比较 `null_score` 和最佳 span score
+- 掌握 squad_v2 评估：`evaluate.load("squad_v2")`，要求 `no_answer_probability` 字段，返回 HasAns/NoAns 分类指标
+- 踩坑与修复：null_score 多 chunk 取错、softmax 数值溢出、pipeline 默认任务错误、GPU tensor 转 numpy、按 title 降采样
+- 掌握模型上传：`push_to_hub()` 推送模型+tokenizer，Hub 网页编辑模型卡片
+- 训练结果：降采样 43,188 → 验证 F1 58.7，NoAns 准确率 74.4%
+- 已整理 `notes/day15.md`（含今日知识总结）
+- 已产出 `projects/p2-rag-qa/rag-qa.ipynb`（完整实验）
+- 已更新 `projects/p2-rag-qa/README.md`
+
+- 下一步：Day 16 进入 GPT 与生成——Decoder-only 架构、自回归生成、解码策略（greedy、beam search、top-k、top-p）
 
 ## 恢复上下文顺序
 

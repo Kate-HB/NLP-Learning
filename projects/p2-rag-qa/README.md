@@ -1,82 +1,153 @@
-# P2 RAG 文档问答
+# P2 BERT 中文问答微调
 
-输入问题，先从本地 Markdown/TXT 文档检索相关 chunk，再返回带 `[数字]` 引用的回答。默认离线摘录回答；配置 OpenAI 兼容接口后，可由 LLM 基于检索上下文生成。
+用 bert-base-chinese 在 Chinese-SQuAD v2 上微调抽取式问答模型，支持不可回答问题（No-Answer）。
 
 ## 1. 问题与数据
 
-- 输入：自然语言问题。
-- 输出：答案、引用来源、Top-k 文档片段和余弦相似度。
-- 示例知识库：`data/bert.md`、`data/rag.md`、`data/transformer.md`。
-- 支持格式：UTF-8 编码的 `.md`、`.txt`，会递归读取子目录。
+- 输入：自然语言问题 + 上下文段落。
+- 输出：答案文本或空（不可回答时）。
+- 数据：[real-jiakai/chinese-squadv2](https://huggingface.co/datasets/real-jiakai/chinese-squadv2)，训练集 90,027 条，验证集 9,936 条。
+- 约 60% 的验证样本不可回答（answers 为空），模型需学会区分作答/不答。
 
 ## 2. 方法流程
 
 ```text
-离线入库：文档 → 重叠切块 → embedding → vectors.npy + metadata.json
-在线问答：问题 → embedding → 余弦 Top-k → 阈值判断 → 生成/拒答 → 引用
+离线：huggingface-cli download parquet → load_dataset → 按 title 降采样 → tokenize → 训练
+在线推理：pipeline("question-answering") + 自定义 null_score 判断
 ```
 
-- `ingest.py`：读取文档、切 chunk、生成并保存 embedding。
-- `retrieve.py`：加载索引、计算余弦相似度、返回 Top-k。
-- `ask.py`：构造有引用编号的上下文，生成回答或低分拒答。
+- 模型：`bert-base-chinese` + `AutoModelForQuestionAnswering`
+- 空答案标签：start=0, end=0（CLS token 位置）
+- 评估：`evaluate.load("squad_v2")`，输出 HasAns/NoAns 分类 F1 和 Exact
+- 不答判定：`start_logits[0] + end_logits[0] > best_answer_score + threshold`
 
-## 3. 安装与运行
+## 3. 数据获取
 
-```powershell
-python -m venv .venv-projects
-.\.venv-projects\Scripts\Activate.ps1
-python -m pip install -r projects/requirements.txt
-cd projects/p2-rag-qa
-python ingest.py
-python retrieve.py "RAG 为什么能降低幻觉" --top-k 3
-python ask.py "chunk 太大会有什么问题"
-python -m unittest discover -s tests -v
+```bash
+# 手动下载 parquet 到本地（国内网络推荐）
+huggingface-cli download real-jiakai/chinese-squadv2 \
+  --repo-type dataset \
+  --local-dir ./data \
+  --include "*.parquet"
 ```
 
-首次执行 `ingest.py` 会下载 `shibing624/text2vec-base-chinese`。索引默认写入 `outputs/index/`。
-
-### 可选：接入生成模型
-
-PowerShell 当前会话设置三个变量后，`ask.py` 自动使用 OpenAI 兼容接口：
-
-```powershell
-$env:LLM_BASE_URL="https://你的服务地址/v1"
-$env:LLM_API_KEY="你的密钥"
-$env:LLM_MODEL="模型名称"
-python ask.py "BERT 为什么适合文本分类"
+```python
+from datasets import load_dataset
+raw_dataset = load_dataset("parquet", data_files={
+    "train": "data/train-00000-of-00001.parquet",
+    "validation": "data/validation-00000-of-00001.parquet",
+})
 ```
 
-密钥只从环境变量读取，不写入仓库。未配置时返回最相关原文并保留引用，整个检索链仍可学习和验证。
+## 4. 训练
 
-## 4. 参数与结果
+```python
+from transformers import AutoTokenizer, AutoModelForQuestionAnswering, Trainer, TrainingArguments
 
-- `--chunk-size 300`：每块最多 300 个字符。
-- `--overlap 50`：相邻块重复 50 个字符，保护边界信息。
-- `--top-k 3`：向生成器提供最相关的 3 块。
-- `--min-score 0.15`：最高相似度低于阈值时拒答。
+model_checkpoint = "bert-base-chinese"
+tokenizer = AutoTokenizer.from_pretrained(model_checkpoint)
+model = AutoModelForQuestionAnswering.from_pretrained(model_checkpoint)
 
-入库后 `outputs/index/manifest.json` 记录 chunk 数和向量维度。每次问答返回 `score`，可据此观察检索质量。阈值不应直接照搬到真实数据，应使用评测问题集调参。
+args = TrainingArguments(
+    "rag-qa-base-bert",
+    eval_strategy="no",
+    save_strategy="epoch",
+    learning_rate=2e-5,
+    num_train_epochs=3,
+    weight_decay=0.01,
+    fp16=True,
+    push_to_hub=True,
+)
 
-本仓库在 2026-07-22 的集成验证生成 4 个 chunks。“RAG 为什么能降低幻觉”的首条来源为 `rag.md`，相似度 0.4875；“chunk 太大会有什么问题”的首条来源为 `rag.md`，相似度 0.6401。分数只用于同一 embedding 模型内排序，不是答案正确率。
+trainer = Trainer(
+    model=model,
+    args=args,
+    train_dataset=train_dataset,
+    tokenizer=tokenizer,
+)
+trainer.train()
+```
 
-## 5. 核心概念
+### 数据降采样
 
-### embedding 表示什么
+每个 title 最多取 100 条，防止高频文档主导训练：
 
-embedding 是文本的连续数值表示。模型训练目标使语义相近文本在向量空间中方向接近；它不是原文压缩包，单个维度通常没有可直接命名的含义。
+```python
+import numpy as np
 
-### chunk 大小与 overlap
+def sample_by_title(dataset, max_per_title=100):
+    rng = np.random.default_rng(42)
+    title_to_idx = {}
+    for i, title in enumerate(dataset["title"]):
+        title_to_idx.setdefault(title, []).append(i)
+    indices = []
+    for idxs in title_to_idx.values():
+        indices.extend(idxs if len(idxs) <= max_per_title
+                       else rng.choice(idxs, max_per_title, replace=False).tolist())
+    return dataset.select(sorted(indices))
+```
 
-chunk 太小会切断论证和指代；太大会混入多个主题、降低检索精度并占用 LLM 上下文。overlap 能保护边界，但过大将产生重复结果并增大索引。
+## 5. 评估
 
-### Top-k 如何影响回答
+```python
+import evaluate
+metric = evaluate.load("squad_v2")
 
-Top-k 太小容易漏证据；太大会加入噪声，甚至让冲突片段误导生成。应同时评估“证据是否被召回”和“最终回答是否正确”。
+metrics = compute_metrics(start_logits, end_logits, validation_dataset, raw_dataset["validation"])
+```
 
-### RAG 为什么只能降低幻觉
+指标含义：
+- `exact` / `f1`：整体精确匹配度和 F1
+- `HasAns_exact` / `HasAns_f1`：可回答子集上的分数
+- `NoAns_exact`：不可回答子集的准确率（预测空答案的比例）
+- `best_exact` / `best_f1`：遍历阈值后的最优分
 
-检索提供可核验事实和边界，但检索可能失败，生成模型也可能忽略上下文。本项目增加引用与低分拒答，使失败更容易发现，不能保证答案绝对正确。
+## 6. 核心问题与解决
 
-## 6. 错误分析与改进
+### 空答案处理
 
-详见 [error_analysis.md](error_analysis.md)。优先建立评测集，再考虑 reranker、混合检索、FAISS 或更强生成模型。
+训练集中 answers 可能为空 `{"text": [], "answer_start": []}`。预处理时检测到空列表直接标 `(0, 0)`，损失函数中 `[CLS]` 位置对应"不答"信号。
+
+### compute_metrics 三个坑
+
+1. **squad_v2 需要 `no_answer_probability`**：预测字典必须包含此字段。
+2. **null_score 取错 feature**：多 chunk 样本须在循环内跟踪 `best_null_score`，不能取最后一个 feature 的 CLS 分。
+3. **softmax 数值溢出**：`np.exp(large_logit)` 会爆成 `inf`，先减 `scores.max()` 再算。
+
+### Pipeline 默认任务错误
+
+`pipeline(model="bert-base-chinese")` 默认走 `fill-mask`，必须显式指定 `pipeline("question-answering", ...)`。
+
+### 自建"不答"推理
+
+pipeline 永远返回最高分 span，不会主动输出空答案。需手动比较 CLS score 和最佳 span score：
+
+```python
+start_logits = outputs.start_logits[0].detach().cpu().numpy()
+end_logits = outputs.end_logits[0].detach().cpu().numpy()
+null_score = start_logits[0] + end_logits[0]
+# 遍历 top spans 取最佳非空得分 best_score
+if null_score > best_score:
+    return {"answer": "", "no_answer": True}
+```
+
+注意：tensor 在 GPU 上需 `.detach().cpu().numpy()`，且 tokenizer 输出的 tensor 需 `.to(device)`。
+
+## 7. 上传到 Hugging Face Hub
+
+```python
+# 训练完推送模型和 tokenizer
+trainer.push_to_hub(commit_message="Training complete", tags="question-answering")
+# 或单独推送
+model.push_to_hub("rag-qa-base-bert")
+tokenizer.push_to_hub("rag-qa-base-bert")
+```
+
+模型卡片通过 Hub 网页编辑，填模型用途、评估结果、数据集和注意事项。
+
+## 8. 模型卡片
+
+- 模型：[Kate-lf/rag-qa-base-bert](https://huggingface.co/Kate-lf/rag-qa-base-bert)
+- 基座：bert-base-chinese
+- 数据集：real-jiakai/chinese-squadv2（降采样后 43,188 训练 / 6,859 验证）
+- 评估结果：见 metrics 输出
