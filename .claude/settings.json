@@ -1,7 +1,18 @@
 {
   "permissions": {
     "allow": [
-      "Bash(D:/Soft/Conda/python.exe -c ' *)"
+      "Bash(D:/Soft/Conda/python.exe -c ' *)",
+      "Bash(git remote *)",
+      "Bash(git pull *)",
+      "Bash(mv README.md README.md.bak)",
+      "Bash(mv README.md.bak README.md)",
+      "Bash(git push *)",
+      "Bash(curl -s \"https://huggingface.co/api/models/Kate-lf/rag-qa-base-bert\")",
+      "Bash(curl -s -X POST \"https://api-inference.huggingface.co/models/Kate-lf/emotion-classification\" -H \"Content-Type: application/json\" -d '{\"inputs\":\"今天很开心\"}')",
+      "Bash(curl -s --connect-timeout 5 \"https://hf-mirror.com/api/models/Kate-lf/emotion-classification\")",
+      "Bash(curl -s --connect-timeout 5 \"https://hf-mirror.com/api/models/Kate-lf/rag-qa-base-bert\")",
+      "Bash(curl -s --connect-timeout 5 \"https://hf-mirror.com/Kate-lf/emotion-classification/raw/main/README.md\")",
+      "Bash(curl -s --connect-timeout 10 -X POST \"https://api-inference.huggingface.co/models/Kate-lf/rag-qa-base-bert\" -H \"Content-Type: application/json\" -d '{\"inputs\":{\"question\":\"苏轼的号是什么？\",\"context\":\"苏轼是北宋著名文学家，号东坡居士。\"}}')"
     ]
   }
 }
