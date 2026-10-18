@@ -475,7 +475,24 @@ Day 15 已推进：
 - 已产出 `projects/p2-rag-qa/rag-qa.ipynb`（完整实验）
 - 已更新 `projects/p2-rag-qa/README.md`
 
-- 下一步：Day 16 进入 GPT 与生成——Decoder-only 架构、自回归生成、解码策略（greedy、beam search、top-k、top-p）
+- 下一步：Day 16 进入 Gradio 交互页面与 HF Spaces 部署
+
+Day 16 已推进：
+
+- 掌握 Gradio `Interface` 三要素：`fn`（处理函数）、`inputs`（输入控件）、`outputs`（输出展示）
+- 封装 P1 分类模型为 Gradio 应用：`pipeline("text-classification")` + `gr.Interface`，输出 label + 百分比置信度
+- 封装 P2 问答模型为 Gradio 应用：双输入（context + question），空答案返回"无法回答"
+- 掌握 HF Spaces 三种部署方式：Gradio Space（服务端跑模型）、Static Space + Inference API（纯前端调 API）、本地 `share=True`（Ngrok 穿透）
+- 踩坑 Static Space：`api-inference.huggingface.co` 国内被阻断（ERR_CONNECTION_CLOSED），改用 Gradio Space
+- 踩坑 Gradio Space：免费配额 2 CPU，创建时需选 CPU (free) 而非 CPU Upgrade
+- 踩坑模型 pipeline_tag：`push_to_hub(tags="summarization")` 导致分类模型被当摘要模型，需在模型页 Settings 修正
+- 踩坑 transformers 版本兼容：升级 4.57.3→5.14.1 修复 huggingface-hub 冲突，但 `question-answering` 任务名被移除，改用 pipeline 自动推断
+- 已整理 `notes/day16.md`（含今日知识总结）
+- 已产出 `projects/p3-llm-app/text-classification.py`、`rag-qa.py`
+- 已更新 `projects/p3-llm-app/README.md`
+- 已写周志 `notes/week04_summary.md`
+
+- 下一步：Day 17 进入 GPT 与生成——Decoder-only 架构、自回归生成、解码策略
 
 ## 恢复上下文顺序
 
